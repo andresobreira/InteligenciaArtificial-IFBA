@@ -1,0 +1,20 @@
+{
+    "descricao": "cadastro de pessoas",
+    "pessoas": [
+        {
+            "nome": "Maria da Silva",
+            "idade": 25,
+            "profissao": "Engenheira"
+        },
+        {
+            "nome": "José dos Santos",
+            "idade": 32,
+            "profissao": "Matemático"
+        },
+        {
+            "nome": "João Souza",
+            "idade": 18,
+            "profissao": "Estudante"
+        }
+    ]
+}
