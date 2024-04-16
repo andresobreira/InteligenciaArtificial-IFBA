@@ -11,7 +11,7 @@ from tocador import *
 # Configurações do assistente:
 IDIOMA_CORPUS = "portuguese"
 IDIOMA_FALA = "pt-br"
-CAMINHO_CONFIGURACAO = "D:\\Dev\\IFBA\\IA\\03_Assistente\\config.json"
+CAMINHO_CONFIGURACAO = "D:\\Dev\\IFBA\\IA_01_Assistente_Virtual\\03_Assistente\\config.json"
 TEMPO_ESCUTA = 4
 
 ATUADORES = [
@@ -72,6 +72,22 @@ def escutar_fala(reconhecedor):
 
     return tem_fala, fala
 
+# Traduz um arquivo de audio em string
+def transcrever_arquivo_de_audio(reconhecedor,arquivo):
+    tem_transcricao, transcricao = False, None
+
+    with sr.AudioFile(arquivo) as fonte_de_audio:
+        fala = reconhecedor.listen(fonte_de_audio)
+
+        try:
+            transcricao = reconhecedor.recognize_google(fala,language = IDIOMA_FALA).lower()
+            
+            tem_transcricao = True
+        except Exception as e:
+            print(f"Erro transcrevendo a fala: {str(e)}")
+
+    return tem_transcricao, transcricao
+
 # Traduz o áudio da fala para string:
 def transcrever_fala(reconhecedor, fala):
     tem_transcricao, transcricao = False, None
@@ -88,7 +104,7 @@ def transcrever_fala(reconhecedor, fala):
 
 # 2ª Parte: realiza o processamento de linguagem natural
 # Obtém tokens a partir da transcrição da fala:
-def obter_tolkens(transcricao):
+def obter_tokens(transcricao):
     return word_tokenize(transcricao)
 
 # Elimina as palavras de parada (seriam os "acessorios" da lingua portuguesa):
@@ -143,7 +159,7 @@ if __name__ == '__main__':
                 if tem_transcricao:
                     print(f"usuário falou: {transcricao}")
 
-                    tokens = obter_tolkens(transcricao)
+                    tokens = obter_tokens(transcricao)
                     tokens = eliminar_palavras_de_parada(tokens,palavras_de_parada)
                     
                     valido, acao, objeto = validar_comando(tokens,nome_do_assistente, acoes)
